@@ -1,0 +1,22 @@
+# Секреты — НИКОГДА не коммитим (требование кейса №10)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Зависимости и сборка
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+
+# Данные и логи
+*.log
+pgdata/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
