@@ -1,9 +1,12 @@
-# HTTP внутри Docker. Публичный HTTPS обеспечивает туннель (профиль tunnel) или внешний reverse proxy.
+# SITE_ADDRESS не задан → HTTP на :80 (локально и за туннелем).
+# SITE_ADDRESS=домен → Caddy сам получает сертификат Let's Encrypt и включает HTTPS.
+# Без покупки домена на VPS подходит sslip.io: IP 1.2.3.4 → 1-2-3-4.sslip.io
 {
 	admin off
+	email {$ACME_EMAIL:admin@example.com}
 }
 
-:80 {
+{$SITE_ADDRESS::80} {
 	encode gzip
 
 	handle /api/* {

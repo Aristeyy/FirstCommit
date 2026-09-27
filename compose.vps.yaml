@@ -1,0 +1,18 @@
+# Развёртывание на VPS с постоянным HTTPS-адресом (без туннеля):
+#   SITE_ADDRESS=1-2-3-4.sslip.io docker compose -f compose.yaml -f compose.vps.yaml up -d --build
+# Порты 80 и 443 на сервере должны быть открыты (нужны для выпуска сертификата).
+services:
+  web:
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?Укажите SITE_ADDRESS, например 1-2-3-4.sslip.io}
+      ACME_EMAIL: ${ACME_EMAIL:-admin@example.com}
+    ports: !override
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
