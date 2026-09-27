@@ -1,0 +1,72 @@
+name: firstcommit
+
+x-backend: &backend
+  build:
+    context: .
+    dockerfile: backend/Dockerfile
+  image: firstcommit/backend:local
+  env_file: .env
+  environment:
+    DATABASE_URL: postgres://${POSTGRES_USER:-firstcommit}:${POSTGRES_PASSWORD:-firstcommit}@db:5432/${POSTGRES_DB:-firstcommit}
+  depends_on:
+    db:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-firstcommit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-firstcommit}
+      POSTGRES_DB: ${POSTGRES_DB:-firstcommit}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    <<: *backend
+    command: ["node", "dist/main.js", "api"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  bot:
+    <<: *backend
+    command: ["node", "dist/main.js", "bot"]
+
+  worker:
+    <<: *backend
+    command: ["node", "dist/main.js", "worker"]
+
+  web:
+    build:
+      context: .
+      dockerfile: miniapp/Dockerfile
+    image: firstcommit/web:local
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Публичный HTTPS для мини-приложения без VPS и домена (Cloudflare Quick Tunnel).
+  # Запуск: docker compose --profile tunnel up -d ; адрес: docker compose logs tunnel
+  tunnel:
+    image: cloudflare/cloudflared:2025.8.1
+    command: ["tunnel", "--no-autoupdate", "--url", "http://web:80"]
+    depends_on:
+      - web
+    profiles: ["tunnel"]
+    restart: unless-stopped
+
+volumes:
+  pgdata:

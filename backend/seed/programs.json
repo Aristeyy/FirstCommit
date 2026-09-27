@@ -1,0 +1,251 @@
+{
+  "_comment": "Курируемый справочник сезонных программ стажировок. Названия компаний и ссылки реальные (проверены), описание обобщённое. Даты наборов ДЕМОНСТРАЦИОННЫЕ: задаются смещением в днях от текущей даты, чтобы показать сценарий дедлайнов и напоминаний. В продукте такие записи помечаются is_synthetic=true.",
+  "programs": [
+    {
+      "id": "yandex-intern",
+      "company": "Яндекс",
+      "title": "Стажировка в Яндексе",
+      "url": "https://yandex.ru/yaintern/",
+      "format": "hybrid",
+      "cities": ["Москва", "Санкт-Петербург", "Екатеринбург", "Новосибирск", "Казань"],
+      "paid": true,
+      "min_course": 2,
+      "duration": "3–6 месяцев",
+      "opens_offset": -20,
+      "deadline_offset": 6,
+      "starts_offset": 60,
+      "summary": "Оплачиваемая стажировка в продуктовых и инфраструктурных командах с наставником и возможностью перехода в штат.",
+      "stages": ["Анкета и резюме", "Алгоритмический контест", "Технические собеседования", "Встречи с командами"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Python", "C++", "Java", "Go", "SQL"], "requirements": ["Уверенное знание одного языка программирования", "Алгоритмы и структуры данных"] },
+        { "direction": "ml", "stack": ["Python", "ML", "SQL"], "requirements": ["Теория вероятностей и статистика", "Основы машинного обучения"] },
+        { "direction": "frontend", "stack": ["JavaScript", "TypeScript", "React"], "requirements": ["HTML, CSS, JavaScript", "Опыт pet-проектов"] }
+      ]
+    },
+    {
+      "id": "vk-intern",
+      "company": "VK",
+      "title": "Стажировки VK",
+      "url": "https://internship.vk.company/",
+      "format": "hybrid",
+      "cities": ["Москва", "Санкт-Петербург"],
+      "paid": true,
+      "min_course": 2,
+      "duration": "3–6 месяцев",
+      "opens_offset": -10,
+      "deadline_offset": 12,
+      "starts_offset": 50,
+      "summary": "Стажировки в командах сервисов VK с наставником, код-ревью и реальными задачами в продакшене.",
+      "stages": ["Заявка", "Тестовое задание", "Техническое интервью", "Интервью с командой"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Go", "Python", "Java", "SQL"], "requirements": ["Базовые знания сетей и баз данных"] },
+        { "direction": "mobile", "stack": ["Kotlin", "Android", "Swift"], "requirements": ["Опыт разработки под Android или iOS"] },
+        { "direction": "qa", "stack": ["Python", "Git"], "requirements": ["Понимание процесса тестирования"] }
+      ]
+    },
+    {
+      "id": "vk-education",
+      "company": "VK Education",
+      "title": "Образовательные программы VK Education",
+      "url": "https://education.vk.company/",
+      "format": "remote",
+      "cities": [],
+      "paid": false,
+      "min_course": 1,
+      "duration": "1 семестр",
+      "opens_offset": 14,
+      "deadline_offset": 40,
+      "starts_offset": 55,
+      "summary": "Практико-ориентированные курсы и проекты от VK совместно с вузами-партнёрами; лучшие участники получают приглашения на стажировки.",
+      "stages": ["Регистрация", "Вступительное задание"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Python", "Go", "SQL"], "requirements": ["Базовое программирование"] },
+        { "direction": "frontend", "stack": ["JavaScript", "React"], "requirements": ["Основы веб-разработки"] }
+      ]
+    },
+    {
+      "id": "tbank-intern",
+      "company": "Т-Банк",
+      "title": "Стажировки и образование Т-Банка",
+      "url": "https://education.tbank.ru/",
+      "format": "hybrid",
+      "cities": ["Москва", "Санкт-Петербург", "Екатеринбург", "Новосибирск", "Казань", "Нижний Новгород"],
+      "paid": true,
+      "min_course": 2,
+      "duration": "от 3 месяцев",
+      "opens_offset": -30,
+      "deadline_offset": 2,
+      "starts_offset": 40,
+      "summary": "Оплачиваемые стажировки в IT-командах финтеха; перед стажировкой — вступительный отбор, часть направлений доступна после курсов.",
+      "stages": ["Заявка", "Вступительный тест", "Собеседование"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Java", "Kotlin", "Go", "SQL"], "requirements": ["ООП, базы данных"] },
+        { "direction": "data", "stack": ["SQL", "Python", "Excel/BI"], "requirements": ["SQL, основы статистики"] },
+        { "direction": "analyst", "stack": ["SQL"], "requirements": ["Понимание клиент-серверной архитектуры, REST"] }
+      ]
+    },
+    {
+      "id": "sber-seasons",
+      "company": "Сбер",
+      "title": "Стажировки в Сбере",
+      "url": "https://rabota.sber.ru/",
+      "format": "hybrid",
+      "cities": ["Москва", "Казань", "Санкт-Петербург", "Нижний Новгород"],
+      "paid": true,
+      "min_course": 3,
+      "duration": "3–6 месяцев",
+      "opens_offset": 7,
+      "deadline_offset": 30,
+      "starts_offset": 70,
+      "summary": "Сезонный набор стажёров в IT-подразделения с возможностью совмещать с учёбой.",
+      "stages": ["Анкета", "Онлайн-тестирование", "Интервью"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Java", "Python", "SQL"], "requirements": ["Знание одного из языков: Java, Python"] },
+        { "direction": "ml", "stack": ["Python", "ML"], "requirements": ["Опыт с pandas, scikit-learn"] },
+        { "direction": "devops", "stack": ["Linux", "Docker", "Git"], "requirements": ["Linux, основы сетей"] }
+      ]
+    },
+    {
+      "id": "ozon-tech",
+      "company": "Ozon Tech",
+      "title": "Стажировка Ozon Tech",
+      "url": "https://career.ozon.ru/",
+      "format": "hybrid",
+      "cities": ["Москва", "Санкт-Петербург", "Казань"],
+      "paid": true,
+      "min_course": 3,
+      "duration": "3–6 месяцев",
+      "opens_offset": -15,
+      "deadline_offset": 10,
+      "starts_offset": 45,
+      "summary": "Стажировка в высоконагруженных сервисах e-commerce.",
+      "stages": ["Заявка", "Тестовое задание", "Техническое интервью"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Go", "C#", "SQL"], "requirements": ["Go или C#, SQL"] },
+        { "direction": "qa", "stack": ["Python", "Git"], "requirements": ["Основы автотестирования"] }
+      ]
+    },
+    {
+      "id": "avito-intern",
+      "company": "Авито",
+      "title": "Стажировка в Авито",
+      "url": "https://career.avito.com/",
+      "format": "hybrid",
+      "cities": ["Москва"],
+      "paid": true,
+      "min_course": 3,
+      "duration": "3 месяца",
+      "opens_offset": 21,
+      "deadline_offset": 45,
+      "starts_offset": 75,
+      "summary": "Стажировки в продуктовых командах с наставником и программой обучения.",
+      "stages": ["Заявка", "Тестовое задание", "Интервью"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Go", "Python", "SQL"], "requirements": ["Go или Python"] },
+        { "direction": "data", "stack": ["SQL", "Python"], "requirements": ["SQL, A/B-тесты"] },
+        { "direction": "frontend", "stack": ["TypeScript", "React"], "requirements": ["React, TypeScript"] }
+      ]
+    },
+    {
+      "id": "kaspersky-safeboard",
+      "company": "Лаборатория Касперского",
+      "title": "SafeBoard — стажировка",
+      "url": "https://safeboard.kaspersky.ru/",
+      "format": "office",
+      "cities": ["Москва"],
+      "paid": true,
+      "min_course": 3,
+      "duration": "6 месяцев",
+      "opens_offset": -40,
+      "deadline_offset": -3,
+      "starts_offset": 30,
+      "summary": "Оплачиваемая стажировка в разработке и тестировании продуктов кибербезопасности.",
+      "stages": ["Заявка", "Тестирование", "Собеседование"],
+      "tracks": [
+        { "direction": "security", "stack": ["C++", "Python", "Linux"], "requirements": ["Интерес к кибербезопасности, C/C++ или Python"] },
+        { "direction": "qa", "stack": ["Python"], "requirements": ["Основы тестирования"] }
+      ]
+    },
+    {
+      "id": "mts-start",
+      "company": "МТС",
+      "title": "Стажировки МТС",
+      "url": "https://job.mts.ru/",
+      "format": "remote",
+      "cities": [],
+      "paid": true,
+      "min_course": 2,
+      "duration": "3–6 месяцев",
+      "opens_offset": -5,
+      "deadline_offset": 20,
+      "starts_offset": 50,
+      "summary": "Стажировки в цифровых продуктах экосистемы, есть удалённый формат.",
+      "stages": ["Заявка", "Тестовое задание", "Интервью"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Java", "Python"], "requirements": ["Java или Python"] },
+        { "direction": "design", "stack": ["Figma"], "requirements": ["Портфолио в Figma"] }
+      ]
+    },
+    {
+      "id": "kontur-intern",
+      "company": "Контур",
+      "title": "Стажировка в Контуре",
+      "url": "https://kontur.ru/career",
+      "format": "hybrid",
+      "cities": ["Екатеринбург", "Казань", "Новосибирск"],
+      "paid": true,
+      "min_course": 2,
+      "duration": "2–3 месяца",
+      "opens_offset": 30,
+      "deadline_offset": 60,
+      "starts_offset": 90,
+      "summary": "Стажировка в продуктовых командах; есть офисы в регионах.",
+      "stages": ["Заявка", "Тестовое задание", "Собеседование"],
+      "tracks": [
+        { "direction": "backend", "stack": ["C#", "SQL"], "requirements": ["C# или Java"] },
+        { "direction": "frontend", "stack": ["JavaScript", "TypeScript", "React"], "requirements": ["JavaScript"] }
+      ]
+    },
+    {
+      "id": "wb-intern",
+      "company": "Wildberries & Russ",
+      "title": "Стажировки в RWB",
+      "url": "https://career.rwb.ru/",
+      "format": "hybrid",
+      "cities": ["Москва", "Санкт-Петербург", "Казань"],
+      "paid": true,
+      "min_course": 3,
+      "duration": "3 месяца",
+      "opens_offset": -7,
+      "deadline_offset": 15,
+      "starts_offset": 45,
+      "summary": "Стажировки в IT-командах маркетплейса.",
+      "stages": ["Заявка", "Тестовое задание", "Интервью"],
+      "tracks": [
+        { "direction": "backend", "stack": ["Go", "SQL"], "requirements": ["Go или Python"] },
+        { "direction": "devops", "stack": ["Linux", "Docker"], "requirements": ["Linux, Docker"] }
+      ]
+    },
+    {
+      "id": "icl-kazan",
+      "company": "ICL Services",
+      "title": "Стажировка ICL Services (Казань)",
+      "url": "https://career.icl-services.com/",
+      "format": "office",
+      "cities": ["Казань", "Иннополис"],
+      "paid": true,
+      "min_course": 2,
+      "duration": "2–4 месяца",
+      "opens_offset": -12,
+      "deadline_offset": 4,
+      "starts_offset": 35,
+      "summary": "Стажировка в крупной IT-компании Татарстана: разработка, тестирование, поддержка инфраструктуры.",
+      "stages": ["Заявка", "Тестирование", "Собеседование"],
+      "tracks": [
+        { "direction": "backend", "stack": ["C#", "Java", "SQL"], "requirements": ["C# или Java"] },
+        { "direction": "devops", "stack": ["Linux", "Docker"], "requirements": ["Администрирование Linux/Windows"] },
+        { "direction": "onec", "stack": ["1С"], "requirements": ["Интерес к 1С-разработке"] }
+      ]
+    }
+  ]
+}

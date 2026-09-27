@@ -1,0 +1,27 @@
+# HTTP внутри Docker. Публичный HTTPS обеспечивает туннель (профиль tunnel) или внешний reverse proxy.
+{
+	admin off
+}
+
+:80 {
+	encode gzip
+
+	handle /api/* {
+		reverse_proxy api:3000
+	}
+
+	handle {
+		root * /srv
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		header /index.html Cache-Control "no-cache"
+		try_files {path} /index.html
+		file_server
+	}
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}

@@ -1,0 +1,36 @@
+{
+  "name": "firstcommit-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Первый коммит — бот, API и сборщик стажировок для MAX",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/main.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\"",
+    "dev:api": "tsx src/main.ts api",
+    "dev:bot": "tsx src/main.ts bot",
+    "dev:worker": "tsx src/main.ts worker",
+    "parse:once": "tsx src/main.ts parse-once",
+    "snapshot": "tsx scripts/snapshot.ts",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@maxhub/max-bot-api": "0.3.1",
+    "cheerio": "^1.2.0",
+    "fastify": "^5.12.5",
+    "pg": "^8.23.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.0"
+  }
+}

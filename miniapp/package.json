@@ -1,0 +1,26 @@
+{
+  "name": "firstcommit-miniapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Первый коммит — мини-приложение MAX: подборка IT-стажировок",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@maxhub/max-ui": "0.5.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "~5.9.0",
+    "vite": "^6.4.0"
+  }
+}
