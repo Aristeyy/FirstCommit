@@ -78,8 +78,8 @@ export function createBot() {
   async function summaryScreen(userId: number): Promise<Body> {
     const user = await repo.getUser(userId);
     const rows = await repo.listActiveInternships();
-    const res = search(rows, profileOf(user!), new Set(), { status: 'active', fit_course: true });
-    const good = res.items.length ? search(rows, profileOf(user!), new Set(), { status: 'active', fit_course: true, limit: 100 }).items : [];
+    const res = search(rows, profileOf(user!), new Set(), { status: 'active', fit_course: true, limit: 100 });
+    const good = res.items;
     const strong = good.filter((v) => v.match.score >= 60).length;
     const urgent = good.filter((v) => v.status === 'open' && v.days_left !== null && v.days_left <= 7).length;
     const lines = [
@@ -174,6 +174,26 @@ export function createBot() {
   }
 
   // ---------- Обработчики ----------
+  // Пользователь создаётся при любом событии: кнопки из старых сообщений работают даже после сброса БД
+  bot.use(async (ctx, next) => {
+    const u = uidOf(ctx) ?? (ctx.callback ? { id: ctx.callback.user.user_id, name: ctx.callback.user.first_name ?? null } : null);
+    if (u) await repo.ensureUser(u.id, u.name);
+    return next();
+  });
+
+  bot.command('help', async (ctx) => {
+    await ctx.reply(
+      [
+        '<b>Что я умею</b>',
+        '/menu — главное меню',
+        '/top — топ-3 стажировки под твой профиль',
+        '/profile — заново пройти настройку профиля',
+        '',
+        'В подборке нажми ☆ на карточке — я напомню о дедлайне за 7, 3 и 1 день.',
+      ].join('\n'),
+      { format: 'html' },
+    );
+  });
   bot.on('bot_started', async (ctx) => {
     const u = uidOf(ctx);
     if (!u) return;
@@ -298,6 +318,12 @@ export function createBot() {
     await respond(ctx, await menuScreen(u.id));
   });
 
+  // Нажатие на кнопку, для которой нет обработчика (например, из очень старого сообщения)
+  bot.on('message_callback', async (ctx) => {
+    const u = uidOf(ctx);
+    if (u) await respond(ctx, await menuScreen(u.id));
+  });
+
   bot.catch((err, ctx) => {
     log.error(`Ошибка обработки обновления ${ctx?.updateType ?? ''}`, err);
     // Пытаемся сообщить пользователю, чтобы он не остался без ответа
@@ -316,6 +342,7 @@ export function createBot() {
           { name: 'menu', description: 'Главное меню' },
           { name: 'top', description: 'Топ-3 стажировки под мой профиль' },
           { name: 'profile', description: 'Изменить профиль' },
+          { name: 'help', description: 'Что умеет бот' },
         ])
         .catch((e) => log.warn('Не удалось установить команды', e));
       await bot.start();

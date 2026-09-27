@@ -2,6 +2,7 @@ import { strict as assert } from 'node:assert';
 import { createHmac } from 'node:crypto';
 import { test } from 'node:test';
 import { AuthError, signSession, validateInitData, verifySession } from './api/auth';
+import { RateLimiter } from './api/rate-limit';
 import { matchScore, recruitmentStatus } from './domain/match';
 import { classifyDirection, extractStack, looksLikeIT } from './domain/taxonomy';
 import { habrAdapter } from './parsers/habr';
@@ -94,4 +95,13 @@ test('парсеры разбирают сохранённые снимки ис
     assert.ok(i.title && i.apply_url.startsWith('https://'), i.title);
     assert.notEqual(i.company, '');
   }
+});
+
+test('ограничитель частоты: лимит в окне и сброс после окна', () => {
+  const rl = new RateLimiter(2, 1000);
+  assert.equal(rl.take('ip', 0), true);
+  assert.equal(rl.take('ip', 10), true);
+  assert.equal(rl.take('ip', 20), false);
+  assert.equal(rl.take('other', 20), true);
+  assert.equal(rl.take('ip', 1500), true);
 });

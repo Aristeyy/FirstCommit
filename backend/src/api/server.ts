@@ -8,6 +8,7 @@ import type { Profile } from '../domain/match';
 import { DIRECTIONS, DIRECTION_IDS, FORMATS, QUICK_CITIES, STACK_IDS } from '../domain/taxonomy';
 import { log } from '../log';
 import { AuthError, signSession, validateInitData, verifySession } from './auth';
+import { RateLimiter } from './rate-limit';
 
 const DEV_USER_ID = 1_000_001;
 
@@ -79,6 +80,18 @@ export async function buildServer() {
     if (err.statusCode && err.statusCode < 500) return sendError(reply, err.statusCode, 'bad_request', err.message);
     log.error(`Ошибка ${req.method} ${req.url}`, err);
     return sendError(reply, 500, 'internal', 'Внутренняя ошибка сервера. Попробуйте ещё раз.');
+  });
+
+  // Ограничение частоты: вход — 20 запросов в минуту с IP, остальные методы — 180 в минуту
+  const authLimiter = new RateLimiter(20, 60_000);
+  const apiLimiter = new RateLimiter(180, 60_000);
+  app.addHook('onRequest', async (req, reply) => {
+    if (req.url.startsWith('/api/health')) return;
+    const limiter = req.url.startsWith('/api/auth') ? authLimiter : apiLimiter;
+    if (!limiter.take(req.ip)) {
+      reply.header('Retry-After', String(limiter.retryAfterSec(req.ip)));
+      return sendError(reply, 429, 'rate_limited', 'Слишком много запросов. Подождите немного и попробуйте снова.');
+    }
   });
 
   app.get('/api/health', async () => {
