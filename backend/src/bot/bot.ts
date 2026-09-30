@@ -198,7 +198,14 @@ export function createBot() {
     const u = uidOf(ctx);
     if (!u) return;
     const user = await repo.ensureUser(u.id, u.name);
-    const hello = `Привет${u.name ? `, ${esc(u.name)}` : ''}! 👋\nЯ помогу найти первую стажировку в IT и не пропустить дедлайн набора.`;
+    // Название и описание выданного бота на онлайн-этапе изменить нельзя, поэтому продукт представляем в первом сообщении
+    const hello = [
+      `Привет${u.name ? `, ${esc(u.name)}` : ''}! 👋 Это <b>«Первый коммит»</b> — сервис для студентов IT-направлений.`,
+      '',
+      'Я соберу стажировки из нескольких источников, отсортирую их под твой профиль и напомню о дедлайне набора, чтобы ты ничего не пропустил.',
+      '',
+      'Настройка займёт 30 секунд — 3 вопроса.',
+    ].join('\n');
     await ctx.reply(hello, { format: 'html' });
     if (user.onboarded_at) await respond(ctx, await menuScreen(u.id));
     else await startOnboarding(ctx, u.id);
