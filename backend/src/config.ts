@@ -23,7 +23,7 @@ const schema = z.object({
   NOTIFY_INTERVAL_MIN: z.coerce.number().int().min(1).default(30),
   HTTP_USER_AGENT: z
     .string()
-    .default('FirstCommitBot/1.0 (+https://github.com/; student hackathon project)'),
+    .default('FirstCommitBot/1.0 (+https://github.com/Aristeyy/FirstCommit)'),
 });
 
 export type Config = z.infer<typeof schema>;

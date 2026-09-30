@@ -4,6 +4,16 @@
   "private": true,
   "description": "Первый коммит — бот, API и сборщик стажировок для MAX",
   "license": "MIT",
+  "author": "Aristeyy (https://github.com/Aristeyy)",
+  "homepage": "https://github.com/Aristeyy/FirstCommit#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aristeyy/FirstCommit.git",
+    "directory": "backend"
+  },
+  "bugs": {
+    "url": "https://github.com/Aristeyy/FirstCommit/issues"
+  },
   "type": "commonjs",
   "main": "dist/main.js",
   "engines": {

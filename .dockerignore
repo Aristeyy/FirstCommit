@@ -8,4 +8,4 @@
 docs
 **/*.test.ts
 backend/scripts
-miniapp/tsconfig.tsbuildinfo
+**/*.tsbuildinfo

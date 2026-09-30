@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.pem  text eol=lf
+
+package-lock.json linguist-generated=true
+backend/seed/snapshots/** linguist-vendored=true

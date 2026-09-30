@@ -5,6 +5,7 @@
 **Чат-бот и мини-приложение в MAX, которые помогают студентам найти первую IT-стажировку и не пропустить дедлайн**
 MAX Bot API · Node.js · React · PostgreSQL · Docker
 
+[![CI](https://github.com/Aristeyy/FirstCommit/actions/workflows/ci.yml/badge.svg)](https://github.com/Aristeyy/FirstCommit/actions/workflows/ci.yml)
 [![MAX](https://img.shields.io/badge/MAX-бот_+_мини--приложение-6C3BFF)](https://dev.max.ru/)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -177,6 +178,10 @@ FirstCommit/
 ## 📖 Документация
 
 Порты, внешние интеграции, пошаговый сценарий проверки, ожидаемое поведение и известные ограничения описаны в [docs/DETAILS.md](docs/DETAILS.md).
+
+## 🔐 Безопасность
+
+Об уязвимостях сообщайте приватно, как описано в [SECURITY.md](SECURITY.md).
 
 ## 📄 Лицензия
 

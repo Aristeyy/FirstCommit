@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TZ: Europe/Moscow
+
+jobs:
+  backend:
+    name: Backend · типы, тесты, сборка
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  miniapp:
+    name: Мини-приложение · сборка
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: miniapp
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: miniapp/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+
+  docker:
+    name: Docker · сборка образов
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Проверка конфигурации Compose
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
+          SITE_ADDRESS=ci.sslip.io docker compose -f compose.yaml -f compose.vps.yaml config --quiet
+      - name: Сборка образов
+        run: docker compose build
