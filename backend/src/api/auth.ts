@@ -26,7 +26,7 @@ function checkPairs(raw: string, botToken: string): Map<string, string> | null {
   const params = new URLSearchParams(raw);
   const keys = [...params.keys()];
   if (keys.length === 0 || keys.filter((k) => k === 'hash').length !== 1) return null;
-  if (new Set(keys).size !== keys.length) return null; // дубликаты параметров не допускаем
+  if (new Set(keys).size !== keys.length) return null;
   const hash = params.get('hash')!;
   const pairs = new Map([...params.entries()].filter(([k]) => k !== 'hash'));
   const dataCheckString = [...pairs.entries()]
@@ -38,28 +38,22 @@ function checkPairs(raw: string, botToken: string): Map<string, string> | null {
   return safeEqualHex(calc, hash) ? pairs : null;
 }
 
-/**
- * Проверка подписи initData мини-приложения MAX (HMAC-SHA256, ключ — производный от токена бота).
- * user.id из initDataUnsafe на клиенте не является доказательством личности — доверяем только этой проверке.
- */
 export function validateInitData(initData: string, botToken: string, maxAgeSec: number, now = Date.now()): ValidatedInitData {
   if (!initData) throw new AuthError('Пустой initData');
   if (!botToken) throw new AuthError('Сервер не настроен: нет токена бота');
-  // Клиент может передать строку как есть или дополнительно URL-кодированной — проверяем оба варианта.
   let pairs = checkPairs(initData, botToken);
   if (!pairs) {
     try {
       const decoded = decodeURIComponent(initData);
       if (decoded !== initData) pairs = checkPairs(decoded, botToken);
     } catch {
-      /* некорректное кодирование */
     }
   }
   if (!pairs) throw new AuthError('Неверная подпись initData');
 
   const authDate = Number(pairs.get('auth_date'));
   if (!Number.isFinite(authDate)) throw new AuthError('Нет auth_date');
-  const authMs = authDate > 1e12 ? authDate : authDate * 1000; // на случай миллисекунд
+  const authMs = authDate > 1e12 ? authDate : authDate * 1000;
   const age = (now - authMs) / 1000;
   if (age > maxAgeSec || age < -300) throw new AuthError('initData устарел');
 
@@ -73,7 +67,6 @@ export function validateInitData(initData: string, botToken: string, maxAgeSec: 
   return { user, authDate, startParam: pairs.get('start_param') ?? null };
 }
 
-/** Короткоживущий токен сессии мини-приложения: `userId.expires.hmac`. Хранится только в памяти клиента. */
 export function signSession(userId: number, secret: string, ttlHours: number, now = Date.now()): string {
   const exp = Math.floor(now / 1000) + Math.round(ttlHours * 3600);
   const body = `${userId}.${exp}`;

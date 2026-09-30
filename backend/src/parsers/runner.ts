@@ -25,7 +25,7 @@ async function programsAnchor(): Promise<Date> {
   return rows[0]?.d ? new Date(rows[0].d) : new Date();
 }
 
-export const ADAPTERS: SourceAdapter[] = [createProgramsAdapter(programsAnchor), habrAdapter, trudvsemAdapter];
+const ADAPTERS: SourceAdapter[] = [createProgramsAdapter(programsAnchor), habrAdapter, trudvsemAdapter];
 
 async function upsertSource(a: SourceAdapter) {
   await db().query(
@@ -58,7 +58,6 @@ async function save(sourceId: string, items: NormalizedInternship[]) {
         ],
       );
     }
-    // Всё, чего больше нет в источнике, скрываем (но не удаляем — на запись могут ссылаться отслеживания).
     await c.query('UPDATE internships SET active = FALSE WHERE source_id = $1 AND NOT (external_id = ANY($2::text[]))', [
       sourceId,
       items.map((i) => i.external_id),
@@ -83,7 +82,6 @@ export async function runParsers(): Promise<void> {
       const msg = e instanceof Error ? e.message : String(e);
       log.warn(`Источник ${a.meta.id}: ошибка сбора (${mode})`, msg);
       await db().query('UPDATE sources SET last_run_at = now(), last_error = $2 WHERE id = $1', [a.meta.id, msg.slice(0, 300)]);
-      // Если живой источник недоступен и данных ещё нет — берём сохранённый снимок, чтобы сценарий не был пустым.
       const { rows } = await db().query('SELECT count(*)::int AS n FROM internships WHERE source_id = $1', [a.meta.id]);
       if (mode === 'live' && rows[0].n === 0) {
         items = await a.fetch('offline').catch(() => null);

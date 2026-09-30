@@ -2,10 +2,6 @@ import { config } from '../config';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/**
- * Вежливый HTTP-клиент для сбора данных: собственный User-Agent, таймаут,
- * несколько повторов с паузой и задержка между запросами к одному сайту.
- */
 export async function politeFetch(url: string, opts: { accept?: string; retries?: number } = {}): Promise<string> {
   const retries = opts.retries ?? 2;
   let lastErr: unknown;

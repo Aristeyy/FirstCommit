@@ -27,7 +27,7 @@ interface Program {
 }
 
 const FILE = path.resolve(__dirname, '../../seed/programs.json');
-export const PROGRAMS_NOTE =
+const PROGRAMS_NOTE =
   'Демо-данные: название и ссылка реальные, описание обобщённое, сроки набора условные. Актуальные условия — на сайте компании.';
 
 function shift(anchor: Date, days: number | null): string | null {
@@ -37,11 +37,6 @@ function shift(anchor: Date, days: number | null): string | null {
   return toIsoDate(d);
 }
 
-/**
- * Сезонные программы стажировок крупных IT-компаний. В MVP это курируемый справочник
- * (в пилоте его поддерживает карьерный центр вуза), даты задаются от «якорной» даты —
- * дня первой загрузки, поэтому дедлайны честно приближаются со временем.
- */
 export function createProgramsAdapter(getAnchor: () => Promise<Date>): SourceAdapter {
   return {
     meta: { id: 'curated', name: 'Справочник программ стажировок', kind: 'curated', url: 'seed/programs.json' },

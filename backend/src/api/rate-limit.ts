@@ -1,8 +1,3 @@
-/**
- * Простой ограничитель частоты запросов (фиксированное окно, в памяти процесса).
- * Для MVP с одним экземпляром API этого достаточно; при горизонтальном
- * масштабировании счётчики переносятся в общее хранилище (Redis).
- */
 export class RateLimiter {
   private hits = new Map<string, { count: number; resetAt: number }>();
 
@@ -11,7 +6,6 @@ export class RateLimiter {
     private readonly windowMs: number,
   ) {}
 
-  /** true — запрос разрешён; false — лимит исчерпан. */
   take(key: string, now = Date.now()): boolean {
     const cur = this.hits.get(key);
     if (!cur || cur.resetAt <= now) {

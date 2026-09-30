@@ -5,7 +5,6 @@ import { clip, pause, politeFetch } from './http';
 import { SNAPSHOT_DIR } from './habr';
 import type { NormalizedInternship, SourceAdapter } from './types';
 
-/** Открытые данные «Работы России» — официальный государственный источник. */
 const API = 'https://opendata.trudvsem.ru/api/v1/vacancies';
 export const TRUDVSEM_QUERIES = ['стажер', 'практикант', 'junior', 'студент программист'];
 const PAGE_LIMIT = 100;
@@ -44,12 +43,11 @@ function cityFrom(v: TvVacancy): string[] {
   return [];
 }
 
-export function normalizeTrudvsem(v: TvVacancy): NormalizedInternship | null {
+function normalizeTrudvsem(v: TvVacancy): NormalizedInternship | null {
   const title = (v['job-name'] ?? '').trim();
   if (!title || !v.vac_url) return null;
   const spec = v.category?.specialisation ?? '';
   const body = `${title} ${v.requirements ?? ''} ${v.duty ?? ''} ${v.requirement?.qualification ?? ''}`;
-  // IT-позиция: либо рубрика «Информационные технологии», либо явные IT-признаки в названии
   const details = `${v.requirements ?? ''} ${v.duty ?? ''} ${v.requirement?.qualification ?? ''}`;
   const isIT = looksLikeIT(title) || (/Информационные технологии/i.test(spec) && looksLikeIT(details));
   if (!isIT) return null;
@@ -92,7 +90,7 @@ export function normalizeTrudvsem(v: TvVacancy): NormalizedInternship | null {
   };
 }
 
-export function parseTrudvsemResponse(json: string): NormalizedInternship[] {
+function parseTrudvsemResponse(json: string): NormalizedInternship[] {
   const data = JSON.parse(json) as TvResponse;
   return (data.results?.vacancies ?? [])
     .map((x) => normalizeTrudvsem(x.vacancy))

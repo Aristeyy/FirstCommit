@@ -23,7 +23,6 @@ async function runBot() {
   await start();
 }
 
-/** Воркер: периодический сбор данных и отправка уведомлений. Ошибка одного цикла не роняет процесс. */
 async function runWorker() {
   const cfg = config();
   const notifier = createNotifier();
@@ -48,7 +47,6 @@ async function runWorker() {
     }
   };
 
-  // При старте собираем данные, если их ещё нет или они устарели
   const { rows } = await db().query<{ fresh: boolean }>(
     `SELECT coalesce(max(last_success_at) > now() - make_interval(mins => $1), false) AS fresh FROM sources`,
     [cfg.PARSER_INTERVAL_MIN],
@@ -77,7 +75,7 @@ async function main() {
     console.error('Использование: node dist/main.js <api|bot|worker|parse-once>');
     process.exit(2);
   }
-  config(); // валидация окружения до старта
+  config();
   await waitForDb();
   await migrate();
   process.on('SIGTERM', () => void shutdown('SIGTERM'));

@@ -82,7 +82,6 @@ export async function buildServer() {
     return sendError(reply, 500, 'internal', 'Внутренняя ошибка сервера. Попробуйте ещё раз.');
   });
 
-  // Ограничение частоты: вход — 20 запросов в минуту с IP, остальные методы — 180 в минуту
   const authLimiter = new RateLimiter(20, 60_000);
   const apiLimiter = new RateLimiter(180, 60_000);
   app.addHook('onRequest', async (req, reply) => {
@@ -145,7 +144,6 @@ export async function buildServer() {
     };
   });
 
-  // Всё ниже — только для авторизованного пользователя мини-приложения
   app.register(async (priv) => {
     priv.addHook('preHandler', async (req: FastifyRequest) => {
       const h = req.headers.authorization ?? '';
@@ -199,6 +197,6 @@ export async function buildServer() {
     });
   });
 
-  app.setNotFoundHandler((req, reply) => sendError(reply, 404, 'not_found', 'Метод не найден'));
+  app.setNotFoundHandler((_req, reply) => sendError(reply, 404, 'not_found', 'Метод не найден'));
   return app;
 }

@@ -83,7 +83,7 @@ export class ApiError extends Error {
   }
 }
 
-let token: string | null = null; // только в памяти: в веб-версии MAX приложение живёт в iframe
+let token: string | null = null;
 let loginPromise: Promise<AuthResult> | null = null;
 
 export interface AuthResult {

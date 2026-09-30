@@ -59,7 +59,6 @@ export async function getInternship(id: number): Promise<InternshipRow | null> {
   return rows[0] ?? null;
 }
 
-/** max_user_id приходит как BIGINT (строка) — приводим к number, id MAX помещаются в безопасный диапазон. */
 function mapUser(r: UserRow & { max_user_id: number | string }): UserRow {
   return { ...r, max_user_id: Number(r.max_user_id) };
 }
@@ -145,7 +144,6 @@ export async function listCities(): Promise<string[]> {
   return rows.map((r) => r.c);
 }
 
-/** Журнал уведомлений: вставка вернёт false, если такое уведомление уже отправлялось. */
 export async function markNotified(userId: number, internshipId: number | null, kind: string): Promise<boolean> {
   const res = await db().query(
     `INSERT INTO notifications_log (user_id, internship_id, kind) VALUES ($1, $2, $3)

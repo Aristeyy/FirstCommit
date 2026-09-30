@@ -6,7 +6,6 @@ const bool = z
   .transform((v) => v === 'true' || v === '1');
 
 const schema = z.object({
-  NODE_ENV: z.string().default('production'),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL обязателен'),
 
   MAX_BOT_TOKEN: z.string().default(''),
@@ -42,7 +41,6 @@ export function config(): Config {
   return cached;
 }
 
-/** Секрет для подписи сессий мини-приложения. Если не задан явно — выводится из токена бота. */
 export function sessionSecret(): string {
   const c = config();
   if (c.SESSION_SECRET) return c.SESSION_SECRET;

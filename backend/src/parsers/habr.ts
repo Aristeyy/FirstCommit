@@ -6,7 +6,6 @@ import { politeFetch, pause } from './http';
 import type { NormalizedInternship, SourceAdapter } from './types';
 
 const BASE = 'https://career.habr.com';
-/** qid=1 — квалификация «Стажёр (Intern)». Публичная страница, разрешена robots.txt. */
 const LIST_URL = (page: number) => `${BASE}/vacancies?qid=1&type=all&sort=date&page=${page}`;
 const MAX_PAGES = 4;
 export const SNAPSHOT_DIR = path.resolve(__dirname, '../../seed/snapshots');
@@ -17,7 +16,7 @@ function parseSalary(text: string): { from: number | null; to: number | null } {
   return { from: nums[0] ?? null, to: nums[1] ?? null };
 }
 
-export function parseHabrList(html: string): NormalizedInternship[] {
+function parseHabrList(html: string): NormalizedInternship[] {
   const $ = cheerio.load(html);
   const out: NormalizedInternship[] = [];
   $('.vacancy-card').each((_, el) => {
@@ -48,7 +47,6 @@ export function parseHabrList(html: string): NormalizedInternship[] {
       else cities.push(normalizeCity(c));
     }
 
-    // Реальная вилка из вакансии (прогноз Хабра «похожие специалисты получают» не используем)
     const salaryBox = card.find('.vacancy-card__salary');
     const predicted = salaryBox.find('.predicted-salary').length > 0;
     const salaryText = predicted ? '' : salaryBox.text().trim();
@@ -56,7 +54,6 @@ export function parseHabrList(html: string): NormalizedInternship[] {
 
     const text = `${title} ${uniqSkills.join(' ')}`;
     const direction = classifyDirection(text);
-    // Хабр Карьера публикует и не-IT позиции (юристы, документооборот) — их отбрасываем
     if (direction === 'other' && !looksLikeIT(text)) return;
     out.push({
       external_id: id,

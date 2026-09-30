@@ -1,8 +1,3 @@
-/**
- * Сохраняет «снимок» живых источников в seed/snapshots. Снимок используется
- * в режиме DATA_MODE=offline и как запасной вариант, если источник недоступен.
- * Запуск: npm run snapshot
- */
 process.env.DATABASE_URL ||= 'postgres://unused';
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';

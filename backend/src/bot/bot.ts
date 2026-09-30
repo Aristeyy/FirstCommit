@@ -23,7 +23,6 @@ export function createBot() {
     return u ? { id: u.user_id, name: u.first_name ?? u.name ?? null } : null;
   };
 
-  /** В колбэке редактируем исходное сообщение (чистый чат), иначе отправляем новое. */
   async function respond(ctx: Context, body: Body) {
     if (ctx.callback) {
       await ctx.answerOnCallback({ message: body } as never);
@@ -34,7 +33,6 @@ export function createBot() {
 
   const appBtn = (text: string, payload?: string) => openAppButton(text, botUsername, payload);
 
-  // ---------- Экраны ----------
   function directionScreen(): Body {
     const dirs = DIRECTIONS.filter((d) => d.id !== 'other');
     const rows = [];
@@ -173,8 +171,6 @@ export function createBot() {
     await respond(ctx, directionScreen());
   }
 
-  // ---------- Обработчики ----------
-  // Пользователь создаётся при любом событии: кнопки из старых сообщений работают даже после сброса БД
   bot.use(async (ctx, next) => {
     const u = uidOf(ctx) ?? (ctx.callback ? { id: ctx.callback.user.user_id, name: ctx.callback.user.first_name ?? null } : null);
     if (u) await repo.ensureUser(u.id, u.name);
@@ -198,7 +194,6 @@ export function createBot() {
     const u = uidOf(ctx);
     if (!u) return;
     const user = await repo.ensureUser(u.id, u.name);
-    // Название и описание выданного бота на онлайн-этапе изменить нельзя, поэтому продукт представляем в первом сообщении
     const hello = [
       `Привет${u.name ? `, ${esc(u.name)}` : ''}! 👋 Это <b>«Первый коммит»</b> — сервис для студентов IT-направлений.`,
       '',
@@ -288,7 +283,6 @@ export function createBot() {
     }
     const was = (await repo.trackedIds(u.id)).has(id);
     await repo.setTracked(u.id, id, !was);
-    // Перерисовываем то сообщение, из которого нажали (топ-3 или уведомление)
     const src = ctx.message?.body?.text ?? '';
     if (src.startsWith('Топ-3')) await respond(ctx, await topScreen(u.id));
     else
@@ -301,7 +295,6 @@ export function createBot() {
       });
   });
 
-  // Свободный текст: ввод города в онбординге, иначе — подсказка
   bot.on('message_created', async (ctx, next) => {
     const u = uidOf(ctx);
     const text = ctx.message?.body?.text?.trim() ?? '';
@@ -325,7 +318,6 @@ export function createBot() {
     await respond(ctx, await menuScreen(u.id));
   });
 
-  // Нажатие на кнопку, для которой нет обработчика (например, из очень старого сообщения)
   bot.on('message_callback', async (ctx) => {
     const u = uidOf(ctx);
     if (u) await respond(ctx, await menuScreen(u.id));
@@ -333,7 +325,6 @@ export function createBot() {
 
   bot.catch((err, ctx) => {
     log.error(`Ошибка обработки обновления ${ctx?.updateType ?? ''}`, err);
-    // Пытаемся сообщить пользователю, чтобы он не остался без ответа
     const body = { text: 'Что-то пошло не так 😕 Попробуй ещё раз или открой /menu.', format: 'html' as const };
     Promise.resolve(ctx?.callback ? ctx.answerOnCallback({ message: body } as never) : ctx?.reply(body.text)).catch(() => undefined);
   });

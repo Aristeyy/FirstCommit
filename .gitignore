@@ -1,18 +1,15 @@
-# Секреты — НИКОГДА не коммитим (требование кейса №10)
 .env
 .env.*
 !.env.example
 *.pem
 *.key
 
-# Зависимости и сборка
 node_modules/
 dist/
 build/
 .vite/
 coverage/
 
-# Данные и логи
 *.log
 pgdata/
 .DS_Store
@@ -21,12 +18,9 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
-# Локальные заметки с доступами — не коммитить
 root.txt
 *.secret
 *password*
 
-
-# Публичные корневые сертификаты Минцифры нужны для сборки — это не секрет
 !infra/certs/*.pem
 

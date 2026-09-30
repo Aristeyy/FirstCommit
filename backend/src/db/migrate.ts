@@ -1,10 +1,6 @@
 import { db } from './pool';
 import { log } from '../log';
 
-/**
- * Версионированные миграции. Выполняются при старте любого процесса под advisory lock,
- * поэтому api, bot и worker могут стартовать одновременно без гонок.
- */
 const MIGRATIONS: { id: number; name: string; sql: string }[] = [
   {
     id: 1,

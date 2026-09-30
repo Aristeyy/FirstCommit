@@ -1,5 +1,3 @@
-/* Цвета берём из токенов MAX UI. Переменные объявлены на .app (внутри провайдера MaxUI), а не на :root —
-   иначе токены темы не видны и подставляются светлые запасные значения. */
 .app {
   --bg: var(--background-secondary, #f2f3f5);
   --surface: var(--background-card, #ffffff);
@@ -41,7 +39,6 @@ button { font: inherit; color: inherit; }
 .tabs button { flex: 1; border: 0; background: transparent; padding: 9px 4px; border-radius: 9px; font-weight: 600; font-size: 14px; color: var(--text-2); cursor: pointer; }
 .tabs button.on { background: var(--bg); color: var(--text); }
 
-/* Подборка */
 .feed__controls { display: flex; flex-direction: column; gap: 10px; }
 .chips-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
 .chips-row::-webkit-scrollbar { display: none; }
@@ -63,7 +60,6 @@ button { font: inherit; color: inherit; }
 
 .list { display: flex; flex-direction: column; gap: 10px; }
 
-/* Карточка */
 .card { position: relative; background: var(--surface); border-radius: var(--radius); }
 .card--muted { opacity: 0.6; }
 .card__main { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 14px 52px 12px 14px; cursor: pointer; border-radius: var(--radius); }
@@ -94,11 +90,9 @@ button { font: inherit; color: inherit; }
 .match--mid { border-color: var(--warning); color: var(--warning); }
 .match--low { border-color: var(--line); color: var(--text-3); }
 
-/* Состояния */
 .state { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 48px 20px; }
 .state__icon { font-size: 36px; }
 
-/* Шторка фильтров */
 .sheet-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); z-index: 20; display: flex; align-items: flex-end; justify-content: center; }
 .sheet {
   width: 100%; max-width: 720px; max-height: 88vh; overflow-y: auto; background: var(--surface);
@@ -110,7 +104,6 @@ button { font: inherit; color: inherit; }
 .field-label { font-size: 13px; font-weight: 600; color: var(--text-2); margin: 16px 0 8px; }
 .switch-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
 
-/* Карточка подробно */
 .back-link { border: 0; background: transparent; color: var(--accent); font-weight: 600; padding: 6px 0 10px; cursor: pointer; font-size: 15px; }
 .detail { background: var(--surface); border-radius: var(--radius); padding: 16px; }
 .detail__head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
@@ -147,5 +140,4 @@ button { font: inherit; color: inherit; }
   max-width: calc(100% - 32px); text-align: center;
 }
 
-/* Разделение поверхностей: в тёмной теме фон и карточки MAX близки по цвету */
 .card, .tabs, .segmented, .detail, .profile, .sources { border: 1px solid var(--line); }

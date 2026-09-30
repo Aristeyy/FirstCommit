@@ -3,9 +3,9 @@ import { directionLabel } from './taxonomy';
 export interface Profile {
   directions: string[];
   stack: string[];
-  course: number | null; // 1..6, 7 = выпускник
+  course: number | null;
   city: string | null;
-  formats: string[]; // пусто = неважно
+  formats: string[];
   paid_only: boolean;
 }
 
@@ -21,28 +21,22 @@ export interface MatchInput {
 export type Recruitment = 'open' | 'soon' | 'closed' | 'rolling';
 
 export interface MatchResult {
-  score: number; // 0..100
-  reasons: string[]; // почему подходит
-  warnings: string[]; // что может помешать
+  score: number;
+  reasons: string[];
+  warnings: string[];
 }
 
-/**
- * Прозрачный скоринг вместо «чёрного ящика»: каждое слагаемое объясняется пользователю.
- * Веса: направление 40, стек 30, курс 15, формат/город 15.
- */
 export function matchScore(p: Profile, it: MatchInput): MatchResult {
   const reasons: string[] = [];
   const warnings: string[] = [];
   let score = 0;
 
-  // Направление
   if (p.directions.length === 0) score += 20;
   else if (p.directions.includes(it.direction)) {
     score += 40;
     reasons.push(`Твоё направление: ${directionLabel(it.direction)}`);
   }
 
-  // Стек
   if (p.stack.length === 0) score += 12;
   else {
     const common = it.stack.filter((s) => p.stack.includes(s));
@@ -53,7 +47,6 @@ export function matchScore(p: Profile, it: MatchInput): MatchResult {
     }
   }
 
-  // Курс
   if (it.min_course === null) {
     score += 15;
   } else if (p.course === null || p.course >= it.min_course) {
@@ -63,7 +56,6 @@ export function matchScore(p: Profile, it: MatchInput): MatchResult {
     warnings.push(`Берут с ${it.min_course} курса`);
   }
 
-  // Формат и город
   const wantsRemote = p.formats.length === 0 || p.formats.includes('remote');
   const inCity = !!p.city && it.cities.some((c) => c.toLowerCase() === p.city!.toLowerCase());
   if (it.format === 'remote' && wantsRemote) {
@@ -83,7 +75,6 @@ export function matchScore(p: Profile, it: MatchInput): MatchResult {
   return { score: Math.max(0, Math.min(100, score)), reasons, warnings };
 }
 
-/** Состояние набора. Для постоянных вакансий дедлайна нет — «набор идёт постоянно». */
 export function recruitmentStatus(
   opensAt: Date | null,
   deadline: Date | null,

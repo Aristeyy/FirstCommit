@@ -9,16 +9,8 @@ import { cardText, humanDate, openAppButton, plural } from '../bot/ui';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/**
- * Уведомления — ключевая ценность продукта: «не пропусти свой набор».
- * 1) напоминания о дедлайнах отслеживаемых программ (за 7, 3 и 1 день);
- * 2) «набор открылся» для отслеживаемых программ со статусом «скоро»;
- * 3) дайджест новых подходящих стажировок не чаще раза в сутки.
- * Каждое уведомление фиксируется в notifications_log и не повторяется.
- */
 export function createNotifier() {
   const cfg = config();
-  // Воркер только отправляет сообщения: создаём клиента Bot API без запуска polling.
   const api: Api = new Bot(cfg.MAX_BOT_TOKEN || 'missing', { clientOptions: { baseUrl: cfg.MAX_API_BASE } }).api;
   let botUsername = cfg.MAX_BOT_USERNAME;
 
@@ -32,7 +24,7 @@ export function createNotifier() {
       format: 'html',
       attachments: buttons.length ? [Keyboard.inlineKeyboard(buttons)] : undefined,
     });
-    await sleep(120); // бережём лимиты API
+    await sleep(120);
   }
 
   async function deadlineReminders(): Promise<number> {

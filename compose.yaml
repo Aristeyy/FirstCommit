@@ -58,8 +58,6 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  # Публичный HTTPS для мини-приложения без VPS и домена (Cloudflare Quick Tunnel).
-  # Запуск: docker compose --profile tunnel up -d ; адрес: docker compose logs tunnel
   tunnel:
     image: cloudflare/cloudflared:2025.8.1
     command: ["tunnel", "--no-autoupdate", "--url", "http://web:80"]

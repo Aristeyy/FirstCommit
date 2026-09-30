@@ -22,7 +22,7 @@ export function Tracked({ onOpen, onToggleTrack, onBrowse, reloadKey }: {
   };
   useEffect(() => {
     void load();
-  }, [reloadKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [reloadKey]);
 
   if (error) return <ErrorState message={error} onRetry={load} />;
   if (!items) return <Loading />;

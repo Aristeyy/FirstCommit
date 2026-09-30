@@ -63,13 +63,12 @@ export function Feed({ meta, filters, setFilters, onOpen, onToggleTrack, reloadK
     void load();
   }, [load, reloadKey]);
 
-  // Поиск по тексту с задержкой, чтобы не дёргать сервер на каждую букву
   useEffect(() => {
     const t = setTimeout(() => {
       if (query !== filters.q) setFilters({ ...filters, q: query });
     }, 350);
     return () => clearTimeout(t);
-  }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [query]);
 
   const loadMore = async () => {
     if (!data) return;
@@ -78,7 +77,6 @@ export function Feed({ meta, filters, setFilters, onOpen, onToggleTrack, reloadK
       const more = await api.search(filters, data.items.length);
       setData({ ...data, items: [...data.items, ...more.items] });
     } catch {
-      /* кнопка останется, можно нажать ещё раз */
     } finally {
       setLoadingMore(false);
     }

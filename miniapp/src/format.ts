@@ -40,7 +40,7 @@ export function statusBadge(i: Internship): { text: string; tone: Tone } {
   }
 }
 
-export function formatLabel(f: Internship['format']): string {
+function formatLabel(f: Internship['format']): string {
   return f === 'remote' ? 'Удалённо' : f === 'hybrid' ? 'Гибрид' : 'Офис';
 }
 

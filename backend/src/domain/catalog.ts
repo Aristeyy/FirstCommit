@@ -22,7 +22,7 @@ export interface InternshipView {
   deadline: string | null;
   starts_at: string | null;
   status: Recruitment;
-  days_left: number | null; // до дедлайна (или до открытия, если status=soon)
+  days_left: number | null;
   summary: string | null;
   requirements: string[];
   stages: string[];
@@ -96,7 +96,7 @@ export interface SearchFilters {
   paid_only?: boolean;
   status?: 'active' | 'open' | 'soon' | 'all';
   kind?: 'program' | 'vacancy' | 'all';
-  fit_course?: boolean; // скрыть то, куда по курсу ещё не берут
+  fit_course?: boolean;
   sort?: 'match' | 'deadline' | 'new';
   limit?: number;
   offset?: number;
@@ -133,7 +133,6 @@ export function search(rows: InternshipRow[], profile: Profile, tracked: Set<num
     return true;
   });
 
-  // Фасеты считаем до фильтра по направлению, чтобы в чипах были видны количества по всем направлениям
   const facets = { directions: {} as Record<string, number>, status: {} as Record<string, number> };
   for (const v of views) {
     facets.directions[v.direction] = (facets.directions[v.direction] ?? 0) + 1;

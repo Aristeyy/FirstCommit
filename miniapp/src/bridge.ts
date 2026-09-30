@@ -1,7 +1,3 @@
-/**
- * Тонкая типизированная обёртка над MAX Bridge (window.WebApp).
- * Вне MAX (обычный браузер) все вызовы безопасно деградируют.
- */
 interface WebAppLike {
   initData?: string;
   initDataUnsafe?: { start_param?: string; user?: { id: number; first_name?: string } };
@@ -21,7 +17,6 @@ interface WebAppLike {
 const wa = (): WebAppLike | undefined => (window as unknown as { WebApp?: WebAppLike }).WebApp;
 
 export const bridge = {
-  /** Мы внутри MAX, если Bridge передал подписанный initData. */
   get inMax(): boolean {
     return !!wa()?.initData;
   },
@@ -31,7 +26,6 @@ export const bridge = {
   get startParam(): string | null {
     const fromBridge = wa()?.initDataUnsafe?.start_param;
     if (fromBridge) return fromBridge;
-    // Для отладки в браузере: ?startapp=i12
     return new URLSearchParams(location.search).get('startapp');
   },
   get platform(): 'ios' | 'android' {
@@ -42,7 +36,6 @@ export const bridge = {
       wa()?.ready?.();
       wa()?.expand?.();
     } catch {
-      /* вне MAX */
     }
   },
   openLink(url: string) {
@@ -74,7 +67,6 @@ export const bridge = {
       else if (kind === 'select') h?.selectionChanged?.();
       else h?.impactOccurred?.('light');
     } catch {
-      /* вне MAX */
     }
   },
   backButton(handler: (() => void) | null) {

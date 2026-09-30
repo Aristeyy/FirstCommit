@@ -1,4 +1,3 @@
-/** Нормализованная запись, которую возвращает любой адаптер источника. */
 export interface NormalizedInternship {
   external_id: string;
   kind: 'program' | 'vacancy';
@@ -14,15 +13,15 @@ export interface NormalizedInternship {
   salary_to: number | null;
   min_course: number | null;
   duration: string | null;
-  opens_at: string | null; // YYYY-MM-DD
-  deadline: string | null; // YYYY-MM-DD
-  starts_at: string | null; // YYYY-MM-DD
+  opens_at: string | null;
+  deadline: string | null;
+  starts_at: string | null;
   summary: string | null;
   requirements: string[];
   stages: string[];
   apply_url: string;
   source_url: string;
-  published_at: string | null; // ISO
+  published_at: string | null;
   is_synthetic: boolean;
   data_note: string | null;
 }
@@ -36,6 +35,5 @@ export interface SourceMeta {
 
 export interface SourceAdapter {
   meta: SourceMeta;
-  /** live — обращение к реальному источнику; offline — сохранённый снимок из seed/snapshots. */
   fetch(mode: 'live' | 'offline'): Promise<NormalizedInternship[]>;
 }

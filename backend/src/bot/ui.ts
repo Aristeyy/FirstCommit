@@ -18,7 +18,7 @@ export function plural(n: number, one: string, few: string, many: string): strin
   return many;
 }
 
-export function statusLine(v: InternshipView): string {
+function statusLine(v: InternshipView): string {
   switch (v.status) {
     case 'open':
       if (v.days_left === 0) return '🔥 Приём заявок заканчивается сегодня';
@@ -32,12 +32,11 @@ export function statusLine(v: InternshipView): string {
   }
 }
 
-export function formatLabel(v: InternshipView): string {
+function formatLabel(v: InternshipView): string {
   const f = v.format === 'remote' ? 'удалённо' : v.format === 'hybrid' ? 'гибрид' : 'офис';
   return v.cities.length ? `${f} · ${v.cities.slice(0, 3).join(', ')}${v.cities.length > 3 ? '…' : ''}` : f;
 }
 
-/** Короткая карточка для чата (HTML-разметка MAX). */
 export function cardText(v: InternshipView, idx?: number): string {
   const head = `${idx !== undefined ? `${idx}. ` : ''}<b>${esc(v.company)}</b> — ${esc(v.title)}`;
   const lines = [head, statusLine(v), `📍 ${esc(formatLabel(v))}`];
@@ -47,7 +46,6 @@ export function cardText(v: InternshipView, idx?: number): string {
   return lines.join('\n');
 }
 
-/** Кнопка открытия мини-приложения с диплинком (payload попадёт в start_param). */
 export function openAppButton(text: string, botUsername: string, payload?: string) {
   return Keyboard.button.openApp(text, botUsername, undefined, payload);
 }

@@ -27,7 +27,7 @@ export function Detail({ id, onToggleTrack, toast }: Props) {
   useEffect(() => {
     setItem(null);
     void load();
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id]);
 
   if (error) return <ErrorState message={error} onRetry={load} />;
   if (!item) return <Loading />;

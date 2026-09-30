@@ -47,7 +47,6 @@ export default function App() {
       setMeta(m);
       setProfile(auth.profile);
       setDevMode(auth.dev);
-      // Диплинк из чата: i123 — карточка, tracked — вкладка «Отслеживаю»
       const sp = auth.start_param ?? bridge.startParam;
       if (sp && /^i\d+$/.test(sp)) setDetailId(Number(sp.slice(1)));
       else if (sp === 'tracked') setTab('tracked');
@@ -63,7 +62,6 @@ export default function App() {
     void start();
   }, [start]);
 
-  // Нативная кнопка «Назад» MAX закрывает карточку
   useEffect(() => bridge.backButton(detailId !== null ? () => setDetailId(null) : null), [detailId]);
 
   const toggleTrack = useCallback(

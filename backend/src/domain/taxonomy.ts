@@ -1,12 +1,3 @@
-/**
- * Справочники и правила классификации — «ядро» продукта. При масштабировании
- * на другие направления (инженерия, медицина и т. д.) меняется только этот файл.
- */
-
-/**
- * В JS `\w` и `\b` понимают только латиницу. Переписываем их в Unicode-вариант,
- * иначе правила вида /системн\w* аналит/ никогда не сработают на русском тексте.
- */
 const L = '[\\p{L}\\p{N}_]';
 const BOUNDARY = `(?:(?<!${L})(?=${L})|(?<=${L})(?!${L}))`;
 function rx(r: RegExp, flags = 'iu'): RegExp {
@@ -37,7 +28,6 @@ export function directionLabel(id: string): string {
   return DIRECTIONS.find((d) => d.id === id)?.label ?? id;
 }
 
-/** Порядок важен: более специфичные правила выше. */
 const DIRECTION_RULES: [DirectionId, RegExp][] = [
   ['onec', rx(/\b1\s?[сc]\b|1[сc]-/)],
   ['security', rx(/безопасн|security|pentest|пентест|\bsoc\b|appsec|кибер/)],
@@ -59,7 +49,6 @@ export function classifyDirection(text: string): DirectionId {
   return 'other';
 }
 
-/** Признаки IT-позиции — для фильтрации общих (не IT-специфичных) источников. */
 const IT_RE = rx(
   /разработ|программист|developer|devops|тестировщ|\bqa\b|аналитик данных|data|\bml\b|frontend|backend|фронтенд|бэкенд|\b1[сc]\b|python|\bjava\b|golang|c\+\+|c#|javascript|typescript|\bsql\b|linux|\bweb\b|веб-|\bit\b|айти|информационн\w* технолог|кибер|системн\w* администр|системн\w* аналит|ux\/ui/,
 );
@@ -67,13 +56,12 @@ export function looksLikeIT(text: string): boolean {
   return IT_RE.test(text);
 }
 
-/** Признаки стажировки или позиции без опыта. */
 const INTERN_RE = rx(/стаж[её]р|стажировк|практикант|\bintern|trainee|без опыта|студент|начинающ|junior|младш/);
 export function looksLikeInternship(text: string): boolean {
   return INTERN_RE.test(text);
 }
 
-export const STACK: { id: string; re: RegExp }[] = [
+const STACK: { id: string; re: RegExp }[] = [
   { id: 'Python', re: rx(/python|django|fastapi|flask|pandas/) },
   { id: 'Java', re: rx(/\bjava\b|spring/) },
   { id: 'Kotlin', re: rx(/kotlin/) },
@@ -110,12 +98,9 @@ export const FORMATS = [
   { id: 'hybrid', label: 'Гибрид' },
   { id: 'office', label: 'Офис' },
 ] as const;
-export type FormatId = (typeof FORMATS)[number]['id'];
 
-/** Города, которые предлагаем кнопками в онбординге (первым — регион пилота). */
 export const QUICK_CITIES = ['Казань', 'Иннополис', 'Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург'];
 
-/** «г Казань», «г. Казань», «Город Казань» → «Казань». */
 export function normalizeCity(raw: string): string {
   return raw
     .replace(/^(г\.?|город)\s+/iu, '')

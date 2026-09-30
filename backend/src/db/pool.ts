@@ -2,7 +2,6 @@ import { Pool, types, type PoolClient } from 'pg';
 import { config } from '../config';
 import { log } from '../log';
 
-// DATE отдаём строкой YYYY-MM-DD: так нет сдвигов из-за часовых поясов между БД, сервером и клиентом.
 types.setTypeParser(1082, (v: string) => v);
 
 let pool: Pool | null = null;
@@ -30,7 +29,6 @@ export async function withTx<T>(fn: (c: PoolClient) => Promise<T>): Promise<T> {
   }
 }
 
-/** Ждём готовности БД при старте контейнера (compose может поднять сервис раньше). */
 export async function waitForDb(attempts = 30): Promise<void> {
   for (let i = 1; i <= attempts; i++) {
     try {
