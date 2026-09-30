@@ -20,3 +20,9 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Локальные заметки с доступами — не коммитить
+root.txt
+*.secret
+*password*
+
